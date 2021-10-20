@@ -1,5 +1,8 @@
 package backendReto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,8 +20,9 @@ public class Category {
     @Column(length = 250)
     private String description;
 
-    @OneToMany
-    private List<Boat> boat;
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "category")
+    @JsonIgnoreProperties("category")
+    private List<Boat> boats;
 
     public Integer getId() {
         return id;
@@ -44,12 +48,12 @@ public class Category {
         this.description = description;
     }
 
-    public List<Boat> getBoat() {
-        return boat;
+    public List<Boat> getBoats() {
+        return boats;
     }
 
-    public void setBoat(List<Boat> boat) {
-        this.boat = boat;
+    public void setBoats(List<Boat> boats) {
+        this.boats = boats;
     }
 
 }

@@ -1,5 +1,7 @@
 package backendReto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idReservation;
 
     @Column
     private Date startDate;
@@ -18,18 +20,26 @@ public class Reservation {
     @Column
     private Date devolutionDate;
 
-    @ManyToOne
-    private Client client;
+    @Column
+    private String status = "created";
 
     @ManyToOne
+    @JsonIgnoreProperties("reservations")
     private Boat boat;
 
-    public Integer getId() {
-        return id;
+    @ManyToOne
+    @JsonIgnoreProperties({"reservations", "messages"})
+    private Client client;
+
+    @Column
+    private String score;
+
+    public Integer getIdReservation() {
+        return idReservation;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdReservation(Integer idReservation) {
+        this.idReservation = idReservation;
     }
 
     public Date getStartDate() {
@@ -48,6 +58,14 @@ public class Reservation {
         this.devolutionDate = devolutionDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Client getClient() {
         return client;
     }
@@ -63,5 +81,15 @@ public class Reservation {
     public void setBoat(Boat boat) {
         this.boat = boat;
     }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+
 
 }

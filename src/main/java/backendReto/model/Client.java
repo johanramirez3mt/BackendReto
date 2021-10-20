@@ -1,5 +1,8 @@
 package backendReto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,10 +12,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(length = 250)
-    private String name;
+    private Integer idClient;
 
     @Column(length = 45)
     private String email;
@@ -20,29 +20,26 @@ public class Client {
     @Column(length = 45)
     private String password;
 
+    @Column(length = 250)
+    private String name;
+
     @Column
     private Integer age;
 
-    @OneToMany
-    private List<Message> message;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "client")
+    @JsonIgnoreProperties("client")
+    private List<Message> messages;
 
-    @OneToMany
-    private List<Reservation> reservation;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "client")
+    @JsonIgnoreProperties("client")
+    private List<Reservation> reservations;
 
-    public Integer getId() {
-        return id;
+    public Integer getIdClient() {
+        return idClient;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
     }
 
     public String getEmail() {
@@ -61,6 +58,14 @@ public class Client {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getAge() {
         return age;
     }
@@ -69,19 +74,20 @@ public class Client {
         this.age = age;
     }
 
-    public List<Message> getMessage() {
-        return message;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setMessage(List<Message> message) {
-        this.message = message;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
-    public List<Reservation> getReservation() {
-        return reservation;
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setReservation(List<Reservation> reservation) {
-        this.reservation = reservation;
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
+
 }

@@ -1,5 +1,7 @@
 package backendReto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,23 +11,25 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idMessage;
 
     @Column(length = 250)
     private String messageText;
 
     @ManyToOne
-    private Client client;
-
-    @ManyToOne
+    @JsonIgnoreProperties({"messages", "client", "reservations"})
     private Boat boat;
 
-    public Integer getId() {
-        return id;
+    @ManyToOne
+    @JsonIgnoreProperties({"messages", "reservations", "client"})
+    private Client client;
+
+    public Integer getIdMessage() {
+        return idMessage;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdMessage(Integer idMessage) {
+        this.idMessage = idMessage;
     }
 
     public String getMessageText() {
@@ -36,14 +40,6 @@ public class Message {
         this.messageText = messageText;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     public Boat getBoat() {
         return boat;
     }
@@ -52,5 +48,12 @@ public class Message {
         this.boat = boat;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
 }

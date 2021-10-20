@@ -1,15 +1,21 @@
 package backendReto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "boat")
-public class Boat {
+public class Boat  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(length = 45)
+    private String name;
 
     @Column(length = 45)
     private String brand;
@@ -17,20 +23,20 @@ public class Boat {
     @Column
     private Integer year;
 
-    @ManyToOne
-    private Category category;
-
-    @Column(length = 45)
-    private String name;
-
     @Column(length = 45)
     private String description;
 
-    @OneToMany
-    private List<Message> message;
+    @ManyToOne
+    @JsonIgnoreProperties("boats")
+    private Category category;
 
-    @OneToMany
-    private List<Reservation> reservation;
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "boat")
+    @JsonIgnoreProperties({"boat", "client"})
+    private List<Message> messages;
+
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "boat")
+    @JsonIgnoreProperties({"boat", "client"})
+    private List<Reservation> reservations;
 
     public Integer getId() {
         return id;
@@ -38,6 +44,14 @@ public class Boat {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBrand() {
@@ -56,22 +70,6 @@ public class Boat {
         this.year = year;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -80,19 +78,27 @@ public class Boat {
         this.description = description;
     }
 
-    public List<Message> getMessage() {
-        return message;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setMessage(List<Message> message) {
-        this.message = message;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public List<Reservation> getReservation() {
-        return reservation;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setReservation(List<Reservation> reservation) {
-        this.reservation = reservation;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
